@@ -1,0 +1,108 @@
+  ---
+title: "Homework 3"
+author: "Angela Zhang"
+date: "10/12/2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Getting started with Tidyverse
+
+(a) 
+
+```{r} 
+apply(faithful,2,mean)
+```
+
+(b)
+```{r}
+library(magrittr)
+
+faithful %>%
+  apply(2,mean)
+```
+
+(c)
+
+I loaded the package ```tidyverse``` in order to use the pipe operator
+```{r}
+library(tidyverse)
+
+faithful %>%
+  summarize(mean = mean(eruptions))
+```
+
+(d)
+
+I used the function ```summarize_all```
+```{r}
+faithful %>%
+  summarize_all(mean)
+```
+
+(e)
+
+272 lines are shown by default. If you convert it to a tibble, only 10 lines of the data is shown. Tibble also informs you how many more rows there are in the dataset (that wasn't outputted).
+```{r}
+dim(faithful)
+
+as.tibble(faithful)
+```
+
+## Intuitive data exploration
+
+(a)
+Subset is part of base R and doesn't discard row names. Filter is part of dplyr. Subset can be used to select columns while ```dplyr``` uses the function ```select```. Subset is used interactively (convenience function) while filter can be used in programming. We will use the function ```filter```
+
+(b)
+```{r}
+airquality %>%
+  filter(Temp > 85) %>%
+  summarize(mean = mean(Ozone, na.rm = T), sd = sd(Ozone, na.rm = T))
+```
+
+(c)
+
+The results that we get are the same but the first method (with ```tidyverse```) is more intuitive.
+```{r}
+airquality %>%
+  group_by(Temp > 85) %>%
+  summarize(mean = mean(Ozone, na.rm = T), sd = sd(Ozone, na.rm = T))
+
+## using by() (from lecture 2)
+by(airquality$Ozone, list(month = airquality$Month), mean, na.rm = TRUE)
+```
+
+## Function composition
+
+(a)
+
+```f <- . %>% cos %>% sin``` creates the function ```sin(cos(x))``` where the user provides the ```x```. For example:
+
+```{r}
+f <- . %>% cos %>% sin
+
+f(2)
+sin(cos(2))
+```
+
+(b)
+
+The compound pipe operator ```%<>%``` is used as shorthand notation in cases where you overwrite a variable. For example, I used instead of using ```beaver1$temp <- sqrt(beaver1$temp) ```,you can use the command ```beaver1 %<>% sqrt``` to achieve the same effect of finding the square root of all the temperatures in the ```beaver1``` dataset.
+
+(c)
+
+I wrote a function that converts Fahrenheit to Celsius and then I used that function with the compound pipe operator
+```{r}
+head(airquality$Temp)
+
+FtoC <- function(x){round((x-32)*(5/9),0)} # This function is not necessarily anymore
+                                           # since I inputted it below.
+
+airquality$Temp %<>% (function(x){round((x-32)*(5/9),0)}) 
+
+head(airquality$Temp)
+```

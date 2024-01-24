@@ -1,0 +1,44 @@
+---
+title: "Homework 10"
+author: "Angela Zhang"
+date: "12/6/2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+```{r}
+
+beta = c(1,2,3)
+predBeta = function(beta, n){
+  set.seed(235)
+  X1 = rep(1,n)
+  X2 = rbinom(n,1,0.7)
+  X3 = runif(n, min = -1, max = 1)
+  error = rnorm(n)
+  X = cbind(X1, X2, X3)
+  Y = X%*%beta + error
+  beta_hat = solve(t(X)%*%X)%*%t(X)%*%y
+  return(beta_hat)
+}
+
+
+## Test python function!
+y = read.csv("y.csv", header = F)
+X = read.csv("X.csv", header = F)
+
+X = as.matrix(X)
+y = as.matrix(y)
+
+(beta_hat = solve(t(X)%*%X)%*%t(X)%*%y)
+
+
+
+
+```
+

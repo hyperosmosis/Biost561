@@ -1,0 +1,4 @@
+   user  system elapsed 
+  0.484   0.007   0.492 
+       x    Model Sandwich 
+1.992977 0.720000 0.880000 

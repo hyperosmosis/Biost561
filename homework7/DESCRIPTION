@@ -1,0 +1,15 @@
+Package: bootmean
+Type: Package
+Title: Simple bootstrapping for estimating the true population mean
+Version: 0.1.0
+Author: Angela Zhang
+Maintainer: Angela <azhang2@uw.edu>
+Description: This package takes in a dataframe and conducts a simple bootstrap test
+    when the user inputs a dataframe and the number of bootstraps that they want.
+    The function give out the 95% confidence interval (quantile) as
+    well as a point estimate of the original set.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Depends: ggplot2
+RoxygenNote: 6.0.1

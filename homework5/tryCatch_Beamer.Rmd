@@ -1,0 +1,73 @@
+---
+title: "Debugging in R: tryCatch"
+author: "Angela Zhang"
+date: "11/7/2017"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Debugging in R
+
+**Debugging** is an often frustrating process of identifying and removing errors from a program. It's standard in any programming language and R is no exception. ```tryCatch``` is helpful for catching mistakes.
+
+![A humorous comic](http://phdcomics.com/comics/archive/phd011406s.gif){ width=80% }
+
+## Components of ```tryCatch```
+
+This function starts with ```tryCatch()```. Within these parentheses, we have:
+
+- A function that we want: i.e. ```{function(x)}```
+- If an error exists, we have a function that indicates we have an error. This is denoted by ```error = {function(x)}```
+- The ```finally``` argument executes all the expressions inside, regardless of whether an error occurred
+
+## Schematic: components of ```tryCatch```
+
+\footnotesize
+```{r, eval = F, echo = T}
+testFunction <- function(x){
+  tryCatch({(expr)}
+           error = function(e){
+             expr
+             expr
+           }
+           finally = {
+             expr # These expressions are run, regardless
+                  # if there was an error
+           })
+}
+```
+## Example of ```tryCatch```
+
+```{r, echo = F}
+test = data.frame(x = c(1,2,3,5), 
+                  y = c("1","2","7","9"))
+```
+
+```{r}
+test
+
+str(test)
+```
+
+Here, ```test``` is a simple dataframe where the x column is numeric but the y column is a factor (as you can see by the ```str``` function)
+
+## Example of ```tryCatch```
+\footnotesize
+```{r, echo = TRUE}
+
+meanTest <- function(x){
+  suppressWarnings(
+    tryCatch(colMeans(test),
+             error= function(e){message("One column isn't numeric!")
+                                test1 = apply(test, 2, as.numeric)
+                                return(colMeans(test1))},
+             finally={message("Changed all columns to numeric")}))
+}
+
+
+meanTest(test)
+```
+
